@@ -1,0 +1,16 @@
+public function saveFolder() 
+{
+    if ($this->input->is_ajax_request()) 
+    { 
+        $IS_FILE = $this->input->post('IS_FILE');
+
+        if($IS_FILE) {
+            $result['status'] = $this->document->changeDocumentFilename();
+        } else {
+            $result['status'] = $this->folder->addEditFolder($this->input->post());
+        }
+
+        echo json_encode($result);
+    }
+
+}
