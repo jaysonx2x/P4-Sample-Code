@@ -1,0 +1,35 @@
+function saveFolder(folderID, isFile) {
+    
+    $.ajax({
+        type: 'POST',
+        data: {
+            ID                  : (parseInt(folderID)>0) ? folderID : 0,
+            CURRENT_FOLDER_ID   : $('#CURRENT_FOLDER_ID').val(),
+//            ROOT_FOLDER_ID      : $('#ROOT_FOLDER_ID').val(),
+            FOLDER_NAME         : $('#FOLDER_NAME').val(),
+            IS_FILE             : isFile
+        },
+        dataType: 'json',
+        url: NIX_SITE_URL + 'files/saveFolder'
+    })
+    .done(function(data) {
+        console.log(data);
+        if(data.status) {
+            
+            var msg = (parseInt(folderID)>0) ? 'Folder renamed.' : 'New folder created.';
+            
+            if(isFile) {
+                msg = 'File name changed.';
+            }
+            
+//            $.snackbar({content: msg, style: 'toast'});
+            $.snackbar({content: msg});
+            
+            window.location.reload();
+        }
+        
+        $('#folder_form_dialog').dialog('close');
+        
+    });
+    
+}
