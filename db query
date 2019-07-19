@@ -1,0 +1,27 @@
+public function getDocumentsByFolderAutocomplete($user_id=0, $key=NULL, $folder_id=0, $search_by=1) 
+{
+    if(intval($user_id)>0 and $key != NULL)
+    {
+        $this->db->where('OWNER_ID', intval($user_id));
+
+        (intval($folder_id)>0) 
+            ? $this->db->where('FOLDER_ID', intval($folder_id)) 
+            : '';
+
+        $this->db->order_by('FILE_EXT');
+
+        $this->db->limit(10);
+
+        if(intval($search_by) == 1) {
+            $this->db->like('FILE_NAME', $key, 'after');
+            $this->db->group_by('FILE_NAME');
+        } else {
+            $this->db->like('KEYWORD', $key, 'after');
+            $this->db->group_by('KEYWORD');
+        }
+
+
+        return $this->db->get(TBL_DOCUMENTS)->result();
+
+    } return FALSE;
+}
